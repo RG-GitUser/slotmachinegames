@@ -510,22 +510,54 @@
             cursor: not-allowed;
         }
 
+        .win-message-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .win-message-overlay.hidden {
+            display: none;
+        }
+
         .win-message {
             text-align: center;
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 107, 53, 0.2);
-            border-radius: 10px;
-            border: 2px solid #FF6B35;
-            font-size: 1.3em;
+            padding: 30px 40px;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.95) 0%, rgba(255, 140, 66, 0.95) 100%);
+            border-radius: 20px;
+            border: 3px solid #FF6B35;
+            font-size: 1.8em;
             font-weight: bold;
-            color: #FF6B35;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+            color: #fff;
+            min-width: 300px;
+            max-width: 90%;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.8), 0 0 80px rgba(64, 224, 208, 0.5);
+            animation: winMessagePop 0.3s ease-out;
+            white-space: pre-line;
+        }
+
+        @keyframes winMessagePop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         .win-message.hidden {
@@ -558,6 +590,29 @@
             border: 3px solid #FF6B35;
             border-radius: 20px;
             box-shadow: 0 0 50px rgba(255, 107, 53, 0.8), 0 0 100px rgba(64, 224, 208, 0.5);
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
+        }
+        
+        .win-video::-webkit-media-controls {
+            display: none !important;
+        }
+        
+        .win-video::-webkit-media-controls-enclosure {
+            display: none !important;
+        }
+        
+        .win-video::-webkit-media-controls-panel {
+            display: none !important;
+        }
+        
+        .win-video::-webkit-media-controls-play-button {
+            display: none !important;
+        }
+        
+        .win-video::-webkit-media-controls-start-playback-button {
+            display: none !important;
         }
 
         .video-bonus-text {
@@ -576,6 +631,26 @@
             border-radius: 15px;
             border: 2px solid #FF6B35;
         }
+        
+        .video-close-hint {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1em;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 16px;
+            border-radius: 10px;
+            z-index: 2002;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .video-close-hint.hidden {
+            display: none;
+        }
 
         .info {
             text-align: center;
@@ -583,6 +658,138 @@
             color: #40E0D0;
             font-size: 0.9em;
             text-shadow: 0 0 5px rgba(64, 224, 208, 0.5);
+        }
+        
+        /* Mobile Responsive Styles */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 5px 10px 0 10px;
+            }
+            
+            .game-container {
+                padding: 5px 15px 15px 15px;
+                max-width: 100%;
+            }
+            
+            .logo-img {
+                width: 90vw !important;
+                max-width: 500px !important;
+            }
+            
+            .balance {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+            
+            .balance-label {
+                font-size: 1em;
+            }
+            
+            .balance-amount {
+                font-size: 1.8em;
+            }
+            
+            .slot-grid {
+                gap: 8px;
+                padding: 10px;
+            }
+            
+            .slot {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 15px;
+            }
+            
+            button {
+                padding: 18px 30px;
+                font-size: 1.1em;
+                width: 100%;
+                max-width: 300px;
+                -webkit-tap-highlight-color: rgba(255, 107, 53, 0.3);
+            }
+            
+            .win-message {
+                font-size: 1.3em;
+                padding: 20px 25px;
+                min-width: 250px;
+                max-width: 85%;
+            }
+            
+            .win-video {
+                max-width: 95%;
+                max-height: 80vh;
+            }
+            
+            .video-bonus-text {
+                font-size: 1.5em;
+                padding: 12px 20px;
+                bottom: 10px;
+            }
+            
+            .video-close-hint {
+                font-size: 0.9em;
+                padding: 6px 12px;
+                top: 10px;
+            }
+            
+            .free-spins-display {
+                font-size: 1em;
+                padding: 12px;
+            }
+            
+            .info {
+                font-size: 0.8em;
+                margin-top: 15px;
+            }
+            
+            .modal-content {
+                width: 90%;
+                max-width: 400px;
+                padding: 20px;
+            }
+            
+            .modal-bet-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .bet-arrow-btn {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .logo-img {
+                width: 95vw !important;
+            }
+            
+            .slot-grid {
+                gap: 6px;
+                padding: 8px;
+            }
+            
+            .slot {
+                font-size: 1.5em;
+            }
+            
+            button {
+                padding: 16px 25px;
+                font-size: 1em;
+            }
+            
+            .win-video {
+                max-width: 98%;
+            }
+            
+            .video-bonus-text {
+                font-size: 1.2em;
+                padding: 10px 15px;
+            }
         }
 
         .free-spins-display {
@@ -763,15 +970,18 @@
             <button class="rebet-btn" id="rebetBtn">Rebet</button>
         </div>
 
-        <div class="win-message hidden" id="winMessage"></div>
+        <div class="win-message-overlay hidden" id="winMessageOverlay">
+            <div class="win-message" id="winMessage"></div>
+        </div>
 
         <div class="free-spins-display hidden" id="freeSpinsDisplay"></div>
 
         <div class="win-video-overlay hidden" id="winVideoOverlay">
-            <video class="win-video" id="winVideo" autoplay muted loop="false">
+            <video class="win-video" id="winVideo" autoplay muted playsinline loop="false" preload="auto" controls="false">
                 <source src="sacredbucks.mp4" type="video/mp4">
             </video>
             <div class="video-bonus-text hidden" id="videoBonusText"></div>
+            <div class="video-close-hint hidden" id="videoCloseHint">Tap outside to close</div>
         </div>
 
         <div class="info">
@@ -829,22 +1039,58 @@
         const modalMessage = document.getElementById('modalMessage');
         const spinBtn = document.getElementById('spinBtn');
         const rebetBtn = document.getElementById('rebetBtn');
+        const winMessageOverlay = document.getElementById('winMessageOverlay');
         const winMessage = document.getElementById('winMessage');
         const winVideoOverlay = document.getElementById('winVideoOverlay');
         const winVideo = document.getElementById('winVideo');
         const videoBonusText = document.getElementById('videoBonusText');
+        const videoCloseHint = document.getElementById('videoCloseHint');
         const freeSpinsDisplay = document.getElementById('freeSpinsDisplay');
+        
+        // Close win message overlay on click
+        winMessageOverlay.addEventListener('click', (e) => {
+            if (e.target === winMessageOverlay) {
+                winMessageOverlay.classList.add('hidden');
+            }
+        });
         const slotGrid = document.getElementById('slotGrid');
         const rebetModal = document.getElementById('rebetModal');
         const confirmRebetBtn = document.getElementById('confirmRebetBtn');
         const cancelRebetBtn = document.getElementById('cancelRebetBtn');
 
-        // Close video on click
-        winVideoOverlay.addEventListener('click', () => {
+        // Function to close video overlay smoothly
+        function closeVideoOverlay() {
             winVideo.pause();
+            winVideo.currentTime = 0;
             winVideoOverlay.classList.add('hidden');
             videoBonusText.classList.add('hidden');
+            videoCloseHint.classList.add('hidden');
+            // Re-enable buttons if they were disabled
+            spinBtn.disabled = false;
+            rebetBtn.disabled = false;
+        }
+        
+        // Close video on click (but only after minimum display time)
+        // Only close when clicking the overlay background, not the video itself
+        let videoClickAllowed = false;
+        winVideoOverlay.addEventListener('click', (e) => {
+            // Only close if clicking the overlay background, not the video element
+            if (videoClickAllowed && e.target === winVideoOverlay) {
+                closeVideoOverlay();
+            }
         });
+        
+        // Allow closing after 2 seconds (so user can see it started)
+        let videoCloseTimeout;
+        const originalShowVideo = () => {
+            videoClickAllowed = false;
+            videoCloseHint.classList.add('hidden');
+            if (videoCloseTimeout) clearTimeout(videoCloseTimeout);
+            videoCloseTimeout = setTimeout(() => {
+                videoClickAllowed = true;
+                videoCloseHint.classList.remove('hidden');
+            }, 2000);
+        };
 
         // Initialize slots
         function initSlots() {
@@ -1064,7 +1310,7 @@
 
             spinBtn.disabled = true;
             rebetBtn.disabled = true;
-            winMessage.classList.add('hidden');
+            winMessageOverlay.classList.add('hidden');
             videoBonusText.classList.add('hidden');
 
             // Clear all visual effects from previous spins
@@ -1229,66 +1475,64 @@
                         winMsg += `\nBONUS: 5 FREE SPINS!`;
                     }
                     winMessage.textContent = winMsg;
-                    winMessage.classList.remove('hidden');
-
-                    // If Sacred Bucks bonus applies, show bonus effects after user sees initial win
+                    winMessageOverlay.classList.remove('hidden');
+                    
+                    // If Sacred Bucks bonus applies, show video immediately (no delay)
                     if (hasSacredBucksBonus) {
-                        // Wait 2 seconds to show initial win, then start bonus sequence
-                        setTimeout(() => {
-                            // Update win message to show doubled amount
-                            winMessage.textContent = `You won ${totalWin} Sacred Bucks! (Doubled!)`;
-                            
-                            // Remove pulse and add blink to only winning Sacred symbols
-                            allSacredWinIndices.forEach(idx => {
-                                slotElements[idx].classList.remove('sacred-pulse');
-                                slotElements[idx].classList.add('sacred-blink');
+                        // Hide win message overlay immediately so video can play
+                        winMessageOverlay.classList.add('hidden');
+                        
+                        // Show Sacred Bucks video with doubled win amount immediately
+                        videoBonusText.innerHTML = `${totalWin} Sacred Bucks<br><span style="font-size: 0.7em;">All winnings doubled</span>`;
+                        videoBonusText.classList.remove('hidden');
+                        
+                        winVideo.currentTime = 0;
+                        winVideoOverlay.classList.remove('hidden');
+                        originalShowVideo(); // Enable close after 2 seconds
+                        
+                        // Play video immediately
+                        const playPromise = winVideo.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(e => {
+                                console.log('Video play error:', e);
+                                // If autoplay fails, try again on user interaction
+                                winVideoOverlay.addEventListener('click', () => {
+                                    winVideo.play().catch(err => console.log('Video play retry error:', err));
+                                }, { once: true });
                             });
+                        }
+                        
+                        // Track when video started
+                        const videoStartTime = Date.now();
+                        const minDisplayTime = 15000; // 15 seconds
+                        
+                        // Hide video when it ends, but ensure it stays for at least 15 seconds
+                        winVideo.onended = () => {
+                            const elapsedTime = Date.now() - videoStartTime;
+                            const remainingTime = minDisplayTime - elapsedTime;
                             
-                            // After blinking for 2 seconds, show video
-                            setTimeout(() => {
-                                allSacredWinIndices.forEach(idx => {
-                                    slotElements[idx].classList.remove('sacred-blink');
-                                });
-                                
-                                // Show Sacred Bucks video with doubled win amount
-                                videoBonusText.innerHTML = `${totalWin} Sacred Bucks<br><span style="font-size: 0.7em;">All winnings doubled</span>`;
-                                videoBonusText.classList.remove('hidden');
-                                
-                                winVideo.currentTime = 0;
-                                winVideoOverlay.classList.remove('hidden');
-                                winVideo.play().catch(e => console.log('Video play error:', e));
-                                
-                                // Track when video started
-                                const videoStartTime = Date.now();
-                                const minDisplayTime = 15000; // 15 seconds
-                                
-                                // Hide video when it ends, but ensure it stays for at least 15 seconds
-                                winVideo.onended = () => {
-                                    const elapsedTime = Date.now() - videoStartTime;
-                                    const remainingTime = minDisplayTime - elapsedTime;
-                                    
-                                    if (remainingTime > 0) {
-                                        // Video ended but hasn't been up for 15 seconds yet, wait
-                                        setTimeout(() => {
-                                            winVideoOverlay.classList.add('hidden');
-                                            videoBonusText.classList.add('hidden');
-                                        }, remainingTime);
-                                    } else {
-                                        // Video has been up for at least 15 seconds, hide immediately
-                                        winVideoOverlay.classList.add('hidden');
-                                        videoBonusText.classList.add('hidden');
-                                    }
-                                };
-                                
-                                // Fallback: ensure video is hidden after at least 15 seconds even if onended doesn't fire
+                            if (remainingTime > 0) {
+                                // Video ended but hasn't been up for 15 seconds yet, wait
                                 setTimeout(() => {
-                                    if (!winVideoOverlay.classList.contains('hidden')) {
-                                        winVideoOverlay.classList.add('hidden');
-                                        videoBonusText.classList.add('hidden');
-                                    }
-                                }, minDisplayTime);
-                            }, 2000);
-                        }, 2000);
+                                    closeVideoOverlay();
+                                }, remainingTime);
+                            } else {
+                                // Video has been up for at least 15 seconds, hide immediately
+                                closeVideoOverlay();
+                            }
+                        };
+                        
+                        // Fallback: ensure video is hidden after at least 15 seconds even if onended doesn't fire
+                        setTimeout(() => {
+                            if (!winVideoOverlay.classList.contains('hidden')) {
+                                closeVideoOverlay();
+                            }
+                        }, minDisplayTime);
+                    } else {
+                        // Auto-close win message after 3 seconds for normal wins
+                        setTimeout(() => {
+                            winMessageOverlay.classList.add('hidden');
+                        }, 3000);
                     }
 
                     // Remove win highlight after 3 seconds (give more time if Sacred Bucks bonus)
@@ -1303,9 +1547,9 @@
                     } else {
                         winMessage.textContent = 'No win this time. Try again!';
                     }
-                    winMessage.classList.remove('hidden');
+                    winMessageOverlay.classList.remove('hidden');
                     setTimeout(() => {
-                        winMessage.classList.add('hidden');
+                        winMessageOverlay.classList.add('hidden');
                     }, 2000);
                 }
 
@@ -1322,9 +1566,9 @@
                         // Free spins ended
                         isFreeSpin = false;
                         winMessage.textContent = 'Free Spins Complete!';
-                        winMessage.classList.remove('hidden');
+                        winMessageOverlay.classList.remove('hidden');
                         setTimeout(() => {
-                            winMessage.classList.add('hidden');
+                            winMessageOverlay.classList.add('hidden');
                         }, 3000);
                     }
                     spinBtn.disabled = false;
