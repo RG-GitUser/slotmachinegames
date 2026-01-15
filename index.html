@@ -1024,10 +1024,14 @@
 
         // Update free spins display
         function updateFreeSpinsDisplay() {
-            if (freeSpinsRemaining > 0) {
-                const currentSpin = 5 - freeSpinsRemaining;
-                freeSpinsDisplay.textContent = `Free Spin ${currentSpin}/5`;
-                freeSpinsDisplay.classList.remove('hidden');
+            if (freeSpinsRemaining >= 0 && isFreeSpin) {
+                const currentSpin = 6 - freeSpinsRemaining; // Shows 1-5 correctly
+                if (currentSpin <= 5) {
+                    freeSpinsDisplay.textContent = `Free Spin ${currentSpin}/5`;
+                    freeSpinsDisplay.classList.remove('hidden');
+                } else {
+                    freeSpinsDisplay.classList.add('hidden');
+                }
             } else {
                 freeSpinsDisplay.classList.add('hidden');
             }
