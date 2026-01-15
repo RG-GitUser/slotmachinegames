@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bepsi Slot Machine - Sacred Bucks</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 5px 20px 0 20px;
+            margin: 0;
+        }
+
+        .game-container {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-radius: 20px;
+            padding: 5px 30px 20px 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 107, 53, 0.2);
+            max-width: 600px;
+            width: 100%;
+            border: 2px solid rgba(255, 107, 53, 0.3);
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0;
+            margin-top: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            line-height: 1;
+        }
+
+        .logo-img {
+            width: 600px;
+            height: auto;
+            max-width: 95%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(255, 107, 53, 0.3));
+            margin: 0;
+            padding: 0;
+            display: block;
+        }
+
+
+        .balance {
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 5px;
+            margin-top: 5px;
+            padding: 8px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 10px;
+            border: 2px solid #FF6B35;
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .balance-label {
+            color: #FF6B35;
+            font-weight: bold;
+        }
+
+        .balance-amount {
+            color: #ffffff;
+            font-size: 1.3em;
+            margin-top: 5px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .bet-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .bet-input {
+            padding: 10px 40px 10px 15px;
+            font-size: 1.1em;
+            border: 2px solid #FF6B35;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            width: 120px;
+            text-align: center;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+
+        .bet-input::-webkit-outer-spin-button,
+        .bet-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .bet-input:focus {
+            outline: none;
+            border-color: #40E0D0;
+            box-shadow: 0 0 10px rgba(64, 224, 208, 0.5);
+        }
+
+        /* Custom spinner arrows */
+        .bet-section {
+            position: relative;
+        }
+
+        .bet-input-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .bet-arrow-up,
+        .bet-arrow-down {
+            position: absolute;
+            right: 5px;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            border: 1px solid rgba(255, 107, 53, 0.8);
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .bet-arrow-up {
+            top: 2px;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .bet-arrow-down {
+            bottom: 2px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .bet-arrow-up:hover,
+        .bet-arrow-down:hover {
+            background: linear-gradient(135deg, #FF8C42 0%, #FF6B35 100%);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.8);
+            transform: scale(1.1);
+        }
+
+        .bet-arrow-up:active,
+        .bet-arrow-down:active {
+            transform: scale(0.95);
+        }
+
+        .bet-arrow-up::before {
+            content: '▲';
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+
+        .bet-arrow-down::before {
+            content: '▼';
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+
+
+        .slot-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border: 3px solid #FF6B35;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .slot {
+            aspect-ratio: 1;
+            background: #000000;
+            border: 2px solid #40E0D0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(64, 224, 208, 0.2);
+            transform: translateZ(0);
+            will-change: contents;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* Glass effect background for Rez Spinz card face */
+        .slot.showing-rez {
+            background: #000000;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slot.showing-rez::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 26, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 0;
+            pointer-events: none;
+            box-shadow: 
+                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+        }
+        
+        .slot.showing-rez::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.05) 0%, 
+                transparent 50%, 
+                rgba(0, 0, 0, 0.3) 100%);
+            border-radius: 10px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .slot.showing-rez .symbol {
+            position: relative;
+            z-index: 1;
+        }
+
+        .slot.spinning {
+            overflow: hidden;
+            position: relative;
+            transform: translateZ(0);
+            will-change: contents;
+            -webkit-transform: translateZ(0);
+        }
+
+        .slot.spinning .symbol {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            animation: slotReel 0.1s linear infinite;
+            will-change: transform;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .slot.spinning .symbol .reel-item {
+            width: 100%;
+            min-height: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            will-change: transform;
+            transform: translateZ(0);
+        }
+
+        .slot.spinning .symbol .reel-item img {
+            width: 150%;
+            height: 150%;
+            object-fit: contain;
+        }
+
+        .slot.spinning .symbol .reel-item > div {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slot.spinning .symbol .reel-item > div img {
+            width: 150%;
+            height: 150%;
+            object-fit: contain;
+        }
+
+        .slot.win {
+            animation: winPulse 0.5s ease infinite;
+            border-color: #FF6B35;
+            box-shadow: 0 0 30px rgba(255, 107, 53, 1), 0 0 50px rgba(255, 107, 53, 0.6);
+        }
+
+        @keyframes slotReel {
+            0% { 
+                transform: translateY(0%) translateZ(0);
+            }
+            100% { 
+                transform: translateY(-100%) translateZ(0);
+            }
+        }
+
+        @keyframes winPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .slot.sacred-pulse {
+            animation: sacredPulse 0.6s ease-in-out infinite;
+            border-color: #FFD700;
+            box-shadow: 
+                0 0 15px rgba(255, 215, 0, 0.8),
+                0 0 30px rgba(255, 215, 0, 0.6);
+        }
+
+        @keyframes sacredPulse {
+            0%, 100% { 
+                box-shadow: 
+                    0 0 15px rgba(255, 215, 0, 0.8),
+                    0 0 30px rgba(255, 215, 0, 0.6);
+            }
+            50% { 
+                box-shadow: 
+                    0 0 25px rgba(255, 215, 0, 1),
+                    0 0 50px rgba(255, 215, 0, 0.8);
+            }
+        }
+
+        .slot.sacred-blink {
+            animation: sacredBlink 0.6s ease-in-out infinite;
+        }
+
+        @keyframes sacredBlink {
+            0%, 100% { 
+                opacity: 1;
+            }
+            50% { 
+                opacity: 0.3;
+            }
+        }
+
+        .symbol {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateZ(0);
+            will-change: contents;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: relative;
+        }
+
+        .symbol img {
+            width: 150%;
+            height: 150%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 5px rgba(64, 224, 208, 0.3));
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: auto;
+            image-rendering: high-quality;
+            transform: translateZ(0);
+            will-change: transform;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            -webkit-transform: translateZ(0);
+        }
+
+        .symbol img[src$="Sacred.svg"] {
+            object-position: center center;
+            vertical-align: middle;
+            margin-top: -5%;
+        }
+        
+        .symbol img[src$=".svg"] {
+            background-color: #000000;
+            mix-blend-mode: normal;
+            image-rendering: auto;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: optimizeQuality;
+            image-rendering: high-quality;
+        }
+        
+        /* Style for the initial card face (Rez.png) */
+        .symbol img[src="Rez.png"] {
+            width: 150%;
+            height: 150%;
+            object-fit: contain;
+            background: transparent;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: auto;
+            image-rendering: high-quality;
+        }
+        
+        /* Ensure SVG container has black background */
+        .symbol > div {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateZ(0);
+        }
+        
+        .symbol > div img {
+            width: 150%;
+            height: 150%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: auto;
+            image-rendering: high-quality;
+            transform: translateZ(0);
+            will-change: transform;
+            -webkit-transform: translateZ(0);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .spin-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.8), 0 0 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .spin-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .rebet-btn {
+            background: linear-gradient(135deg, #40E0D0 0%, #20B2AA 100%);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .rebet-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(64, 224, 208, 0.8), 0 0 30px rgba(64, 224, 208, 0.4);
+        }
+
+        .rebet-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .win-message {
+            text-align: center;
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 10px;
+            border: 2px solid #FF6B35;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #FF6B35;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .win-message.hidden {
+            display: none;
+        }
+
+        .win-video-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .win-video-overlay.hidden {
+            display: none;
+        }
+
+        .win-video {
+            max-width: 90%;
+            max-height: 90%;
+            width: auto;
+            height: auto;
+            border: 3px solid #FF6B35;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255, 107, 53, 0.8), 0 0 100px rgba(64, 224, 208, 0.5);
+        }
+
+        .video-bonus-text {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #FF6B35;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 1), 0 0 40px rgba(64, 224, 208, 0.8);
+            z-index: 2001;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            border-radius: 15px;
+            border: 2px solid #FF6B35;
+        }
+
+        .info {
+            text-align: center;
+            margin-top: 20px;
+            color: #40E0D0;
+            font-size: 0.9em;
+            text-shadow: 0 0 5px rgba(64, 224, 208, 0.5);
+        }
+
+        .free-spins-display {
+            text-align: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 10px;
+            border: 2px solid #FF6B35;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #FF6B35;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.4);
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .free-spins-display.hidden {
+            display: none;
+        }
+
+        /* Rebet Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+            border: 3px solid #FF6B35;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.6), 0 0 80px rgba(64, 224, 208, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-content h2 {
+            color: #FF6B35;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+        }
+
+        .modal-content p {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+
+        .modal-bet-info {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(64, 224, 208, 0.3);
+        }
+
+        .modal-balance {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 8px;
+        }
+
+        .modal-bet-input-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-label {
+            color: #40E0D0;
+            font-size: 1em;
+        }
+
+        .modal-value {
+            color: #FF6B35;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.8);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .modal-confirm-btn,
+        .modal-cancel-btn {
+            padding: 12px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-confirm-btn {
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8C42 100%);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-confirm-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.8), 0 0 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .modal-cancel-btn {
+            background: linear-gradient(135deg, #666 0%, #444 100%);
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal-cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 100, 100, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1><img src="rezspinslogo.svg" alt="REZ Spinz" class="logo-img"></h1>
+        
+        <div class="balance">
+            <div class="balance-label">Sacred Bucks</div>
+            <div class="balance-amount" id="balance">10</div>
+            <div class="bet-label" style="margin-top: 10px; color: #40E0D0; font-size: 0.9em;">Current Bet:</div>
+            <div class="bet-amount" id="currentBet" style="color: #40E0D0; font-size: 1.1em; margin-top: 5px;">-</div>
+        </div>
+
+
+        <div class="slot-grid" id="slotGrid">
+            <!-- Slots will be generated by JavaScript -->
+        </div>
+
+        <div class="controls">
+            <button class="spin-btn" id="spinBtn">Spin</button>
+            <button class="rebet-btn" id="rebetBtn">Rebet</button>
+        </div>
+
+        <div class="win-message hidden" id="winMessage"></div>
+
+        <div class="free-spins-display hidden" id="freeSpinsDisplay"></div>
+
+        <div class="win-video-overlay hidden" id="winVideoOverlay">
+            <video class="win-video" id="winVideo" autoplay muted loop="false">
+                <source src="sacredbucks.mp4" type="video/mp4">
+            </video>
+            <div class="video-bonus-text hidden" id="videoBonusText"></div>
+        </div>
+
+        <div class="info">
+            Three Bepsis in a row = 100 Sacred Bucks + 5 Free Spins!
+        </div>
+    </div>
+
+    <!-- Bet Modal -->
+    <div class="modal-overlay hidden" id="rebetModal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Place Your Bet</h2>
+            <p id="modalMessage">Set your bet amount:</p>
+            <div class="modal-bet-info">
+                <div class="modal-balance">
+                    <span class="modal-label">Your Balance:</span>
+                    <span class="modal-value" id="modalBalance">10</span> Sacred Bucks
+                </div>
+                <div class="modal-bet-input-section">
+                    <label for="modalBetAmount" style="color: #FF6B35; font-size: 1em; text-shadow: 0 0 5px rgba(255, 107, 53, 0.5); margin-bottom: 10px; display: block;">Bet Amount:</label>
+                    <div class="bet-input-wrapper">
+                        <input type="number" id="modalBetAmount" class="bet-input" min="1" max="1000" value="10" step="1">
+                        <div class="bet-arrow-up" id="modalBetArrowUp"></div>
+                        <div class="bet-arrow-down" id="modalBetArrowDown"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-confirm-btn" id="confirmRebetBtn">Confirm Bet</button>
+                <button class="modal-cancel-btn" id="cancelRebetBtn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const symbols = {
+            bepsi: '1.svg',
+            cigarette: '2.svg',
+            drum: '3.svg',
+            fiddleheads: '4.svg',
+            sacred: 'Sacred.svg'
+        };
+
+        let balance = 10;
+        let lastBet = 0; // No bet placed initially
+        let isSpinning = false;
+        let freeSpinsRemaining = 0;
+        let isFreeSpin = false;
+
+        const balanceDisplay = document.getElementById('balance');
+        const currentBetDisplay = document.getElementById('currentBet');
+        const modalBetInput = document.getElementById('modalBetAmount');
+        const modalBetArrowUp = document.getElementById('modalBetArrowUp');
+        const modalBetArrowDown = document.getElementById('modalBetArrowDown');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const spinBtn = document.getElementById('spinBtn');
+        const rebetBtn = document.getElementById('rebetBtn');
+        const winMessage = document.getElementById('winMessage');
+        const winVideoOverlay = document.getElementById('winVideoOverlay');
+        const winVideo = document.getElementById('winVideo');
+        const videoBonusText = document.getElementById('videoBonusText');
+        const freeSpinsDisplay = document.getElementById('freeSpinsDisplay');
+        const slotGrid = document.getElementById('slotGrid');
+        const rebetModal = document.getElementById('rebetModal');
+        const confirmRebetBtn = document.getElementById('confirmRebetBtn');
+        const cancelRebetBtn = document.getElementById('cancelRebetBtn');
+
+        // Close video on click
+        winVideoOverlay.addEventListener('click', () => {
+            winVideo.pause();
+            winVideoOverlay.classList.add('hidden');
+            videoBonusText.classList.add('hidden');
+        });
+
+        // Initialize slots
+        function initSlots() {
+            slotGrid.innerHTML = '';
+            for (let i = 0; i < 12; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'slot showing-rez';
+                slot.innerHTML = '<div class="symbol"><img src="Rez.png" alt="REZ Spinz"></div>';
+                slotGrid.appendChild(slot);
+            }
+        }
+
+        // Get random symbol
+        function getRandomSymbol() {
+            const rand = Math.random();
+            if (rand < 0.083) { // 1/12 for bepsi
+                return symbols.bepsi;
+            } else if (rand < 0.25) {
+                return symbols.cigarette;
+            } else if (rand < 0.50) {
+                return symbols.drum;
+            } else if (rand < 0.75) {
+                return symbols.fiddleheads;
+            } else {
+                return symbols.sacred; // 25% chance for Sacred
+            }
+        }
+
+        // Check for wins - returns win info and whether free spins should be triggered
+        function checkWins(slots) {
+            let totalWin = 0;
+            const winLines = [];
+            const usedIndices = new Set(); // Track used indices to prevent duplicate counting
+            let triggersFreeSpins = false;
+
+            // Check rows (4 rows)
+            for (let row = 0; row < 4; row++) {
+                const startIdx = row * 3;
+                const line = [
+                    slots[startIdx],
+                    slots[startIdx + 1],
+                    slots[startIdx + 2]
+                ];
+
+                // Three bepsis in a row = 100 Sacred Bucks + Free Spins
+                if (line[0] === symbols.bepsi && line[1] === symbols.bepsi && line[2] === symbols.bepsi) {
+                    const indices = [startIdx, startIdx + 1, startIdx + 2];
+                    const key = indices.sort().join(',');
+                    if (!usedIndices.has(key)) {
+                        totalWin += 100;
+                        winLines.push(indices);
+                        usedIndices.add(key);
+                        triggersFreeSpins = true;
+                    }
+                }
+                // Three Sacred symbols in a row = special win (handled separately with video)
+                else if (line[0] === symbols.sacred && line[1] === symbols.sacred && line[2] === symbols.sacred) {
+                    const indices = [startIdx, startIdx + 1, startIdx + 2];
+                    const key = indices.sort().join(',');
+                    if (!usedIndices.has(key)) {
+                        // Sacred Bucks win - special handling with video
+                        totalWin += 200; // High value for Sacred Bucks win
+                        winLines.push(indices);
+                        usedIndices.add(key);
+                    }
+                }
+                // Other combinations
+                else if (line[0] === line[1] && line[1] === line[2] && line[0] !== symbols.bepsi && line[0] !== symbols.sacred) {
+                    const indices = [startIdx, startIdx + 1, startIdx + 2];
+                    const key = indices.sort().join(',');
+                    if (!usedIndices.has(key)) {
+                        if (line[0] === symbols.cigarette) {
+                            totalWin += 25;
+                        } else if (line[0] === symbols.drum) {
+                            totalWin += 20;
+                        } else if (line[0] === symbols.fiddleheads) {
+                            totalWin += 15;
+                        }
+                        winLines.push(indices);
+                        usedIndices.add(key);
+                    }
+                }
+            }
+
+            // Check columns (3 columns)
+            for (let col = 0; col < 3; col++) {
+                const line = [
+                    slots[col],
+                    slots[col + 3],
+                    slots[col + 6],
+                    slots[col + 9]
+                ];
+
+                // Check for three in a row in column
+                for (let i = 0; i <= 1; i++) {
+                    if (line[i] === line[i + 1] && line[i + 1] === line[i + 2]) {
+                        const indices = [col + i * 3, col + (i + 1) * 3, col + (i + 2) * 3];
+                        const key = indices.sort().join(',');
+                        if (!usedIndices.has(key)) {
+                            if (line[i] === symbols.bepsi) {
+                                totalWin += 100;
+                                triggersFreeSpins = true;
+                            } else if (line[i] === symbols.sacred) {
+                                totalWin += 200; // Sacred Bucks win
+                            } else if (line[i] === symbols.cigarette) {
+                                totalWin += 25;
+                            } else if (line[i] === symbols.drum) {
+                                totalWin += 20;
+                            } else if (line[i] === symbols.fiddleheads) {
+                                totalWin += 15;
+                            }
+                            winLines.push(indices);
+                            usedIndices.add(key);
+                        }
+                    }
+                }
+            }
+
+            // Check diagonals
+            // Top-left to bottom-right
+            const diag1 = [slots[0], slots[4], slots[8]];
+            if (diag1[0] === diag1[1] && diag1[1] === diag1[2]) {
+                const indices = [0, 4, 8];
+                const key = indices.sort().join(',');
+                if (!usedIndices.has(key)) {
+                    if (diag1[0] === symbols.bepsi) {
+                        totalWin += 100;
+                        triggersFreeSpins = true;
+                    } else if (diag1[0] === symbols.sacred) {
+                        totalWin += 200; // Sacred Bucks win
+                    } else if (diag1[0] === symbols.cigarette) {
+                        totalWin += 25;
+                    } else if (diag1[0] === symbols.drum) {
+                        totalWin += 20;
+                    } else if (diag1[0] === symbols.fiddleheads) {
+                        totalWin += 15;
+                    }
+                    winLines.push(indices);
+                    usedIndices.add(key);
+                }
+            }
+
+            // Top-right to bottom-left
+            const diag2 = [slots[2], slots[4], slots[6]];
+            if (diag2[0] === diag2[1] && diag2[1] === diag2[2]) {
+                const indices = [2, 4, 6];
+                const key = indices.sort().join(',');
+                if (!usedIndices.has(key)) {
+                    if (diag2[0] === symbols.bepsi) {
+                        totalWin += 100;
+                        triggersFreeSpins = true;
+                    } else if (diag2[0] === symbols.sacred) {
+                        totalWin += 200; // Sacred Bucks win
+                    } else if (diag2[0] === symbols.cigarette) {
+                        totalWin += 25;
+                    } else if (diag2[0] === symbols.drum) {
+                        totalWin += 20;
+                    } else if (diag2[0] === symbols.fiddleheads) {
+                        totalWin += 15;
+                    }
+                    winLines.push(indices);
+                    usedIndices.add(key);
+                }
+            }
+
+            return { totalWin, winLines, triggersFreeSpins };
+        }
+
+        // Check if there are at least 3 matching symbols
+        function hasAtLeastThreeMatches(slots) {
+            const symbolCounts = {};
+            slots.forEach(symbol => {
+                symbolCounts[symbol] = (symbolCounts[symbol] || 0) + 1;
+            });
+            return Object.values(symbolCounts).some(count => count >= 3);
+        }
+
+        // Update free spins display
+        function updateFreeSpinsDisplay() {
+            if (freeSpinsRemaining > 0) {
+                const currentSpin = 5 - freeSpinsRemaining;
+                freeSpinsDisplay.textContent = `Free Spin ${currentSpin}/5`;
+                freeSpinsDisplay.classList.remove('hidden');
+            } else {
+                freeSpinsDisplay.classList.add('hidden');
+            }
+        }
+
+        // Spin the slots
+        function spin(isFreeSpinMode = false) {
+            if (isSpinning) return;
+
+            if (!isFreeSpin) {
+                // Check if user has placed a bet
+                if (lastBet === 0 || lastBet < 1) {
+                    // Open bet modal to place bet
+                    rebet();
+                    return;
+                }
+                
+                // Use last bet amount
+                const bet = lastBet;
+
+                isSpinning = true;
+                balance -= bet;
+                updateBalance();
+            } else {
+                // Free spin - don't deduct bet
+                isSpinning = true;
+                freeSpinsRemaining--;
+                updateFreeSpinsDisplay();
+            }
+
+            spinBtn.disabled = true;
+            rebetBtn.disabled = true;
+            winMessage.classList.add('hidden');
+            videoBonusText.classList.add('hidden');
+
+            // Clear all visual effects from previous spins
+            const slotElements = slotGrid.querySelectorAll('.slot');
+            slotElements.forEach(slot => {
+                slot.classList.remove('win', 'sacred-pulse', 'sacred-blink');
+            });
+
+            // Generate random slots
+            const slots = [];
+
+            // Generate results
+            for (let i = 0; i < 12; i++) {
+                slots.push(getRandomSymbol());
+            }
+
+            // Create spinning reel effect
+            slotElements.forEach((slot, index) => {
+                slot.classList.add('spinning');
+                const symbolDiv = slot.querySelector('.symbol');
+                
+                // Create a reel with multiple symbols scrolling
+                const reelSymbols = [];
+                const allSymbols = [symbols.bepsi, symbols.cigarette, symbols.drum, symbols.fiddleheads, symbols.sacred];
+                
+                // Create more symbols in the reel for smoother scrolling (duplicate for seamless loop)
+                for (let j = 0; j < 12; j++) {
+                    const randomSymbol = allSymbols[Math.floor(Math.random() * allSymbols.length)];
+                    reelSymbols.push(randomSymbol);
+                }
+                // Add the final result at the end
+                reelSymbols.push(slots[index]);
+                // Add a duplicate set at the beginning for seamless loop
+                for (let j = 0; j < 3; j++) {
+                    reelSymbols.unshift(allSymbols[Math.floor(Math.random() * allSymbols.length)]);
+                }
+                
+                // Build the reel HTML
+                let reelHTML = '';
+                reelSymbols.forEach((symbol, j) => {
+                    if (symbol.endsWith('.svg')) {
+                        reelHTML += `<div class="reel-item"><div style="background: #000000; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"><img src="${symbol}" alt="Symbol" style="background: #000000;"></div></div>`;
+                    } else {
+                        reelHTML += `<div class="reel-item"><img src="${symbol}" alt="Symbol"></div>`;
+                    }
+                });
+                
+                symbolDiv.innerHTML = reelHTML;
+            });
+
+            // Stop spinning after animation
+            setTimeout(() => {
+                slotElements.forEach((slot, index) => {
+                    slot.classList.remove('spinning', 'showing-rez');
+                    const symbolDiv = slot.querySelector('.symbol');
+                    const imgSrc = slots[index];
+                    
+                    // Reset symbol display to normal
+                    symbolDiv.style.position = '';
+                    symbolDiv.style.animation = '';
+                    symbolDiv.style.flexDirection = '';
+                    symbolDiv.style.top = '';
+                    symbolDiv.style.left = '';
+                    symbolDiv.style.justifyContent = '';
+                    
+                    // Wrap SVG images in a container with black background
+                    if (imgSrc.endsWith('.svg')) {
+                        const isSacred = imgSrc === 'Sacred.svg';
+                        symbolDiv.innerHTML = `<div style="background: #000000; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative;"><img src="${imgSrc}" alt="Symbol" style="background: #000000; ${isSacred ? 'object-fit: contain; object-position: center center; vertical-align: middle;' : ''}"></div>`;
+                    } else if (imgSrc === 'Rez.png') {
+                        symbolDiv.innerHTML = `<img src="${imgSrc}" alt="Symbol">`;
+                        slot.classList.add('showing-rez');
+                    } else {
+                        symbolDiv.innerHTML = `<img src="${imgSrc}" alt="Symbol">`;
+                    }
+                });
+
+                // Check for wins first
+                let { totalWin, winLines, triggersFreeSpins } = checkWins(slots);
+                
+                // Find all Sacred symbols on the page
+                const allSacredIndices = [];
+                slots.forEach((symbol, index) => {
+                    if (symbol === symbols.sacred) {
+                        allSacredIndices.push(index);
+                    }
+                });
+                
+                // Check if there's a regular win (not from Sacred symbols)
+                // Calculate win amount from non-Sacred symbol wins only
+                let regularWinAmount = 0;
+                let hasRegularWin = false;
+                
+                winLines.forEach(line => {
+                    // Check if this win line is NOT all Sacred symbols
+                    const isAllSacred = line.every(idx => slots[idx] === symbols.sacred);
+                    if (!isAllSacred) {
+                        hasRegularWin = true;
+                        // Calculate the win amount for this non-Sacred line
+                        const symbol = slots[line[0]];
+                        if (symbol === symbols.bepsi) {
+                            regularWinAmount += 100;
+                        } else if (symbol === symbols.cigarette) {
+                            regularWinAmount += 25;
+                        } else if (symbol === symbols.drum) {
+                            regularWinAmount += 20;
+                        } else if (symbol === symbols.fiddleheads) {
+                            regularWinAmount += 15;
+                        }
+                    }
+                });
+                
+                // Sacred Bucks bonus: at least 3 Sacred symbols anywhere AND a regular (non-Sacred) win
+                // Must have a win that's NOT from Sacred symbols (regularWinAmount > 0), AND 3+ Sacred symbols on the page
+                const hasSacredBucksBonus = allSacredIndices.length >= 3 && hasRegularWin && regularWinAmount > 0;
+                
+                // Store original win for display
+                const originalWin = totalWin;
+                
+                // Double the win if Sacred Bucks bonus applies
+                if (hasSacredBucksBonus) {
+                    totalWin = totalWin * 2;
+                }
+
+                // Trigger free spins if 3 bepsis in a row (only if not already in free spin mode)
+                if (triggersFreeSpins && !isFreeSpin) {
+                    freeSpinsRemaining = 5;
+                    isFreeSpin = true;
+                    updateFreeSpinsDisplay();
+                }
+
+                if (totalWin > 0) {
+                    // Update balance with the final win amount
+                    balance += totalWin;
+                    updateBalance();
+
+                    // Highlight winning slots
+                    winLines.forEach(line => {
+                        line.forEach(idx => {
+                            slotElements[idx].classList.add('win');
+                        });
+                    });
+                    
+                    // Find all Sacred symbols in winning lines and make them pulse
+                    const allSacredWinIndices = new Set();
+                    winLines.forEach(line => {
+                        line.forEach(idx => {
+                            if (slots[idx] === symbols.sacred) {
+                                allSacredWinIndices.add(idx);
+                            }
+                        });
+                    });
+                    
+                    // Add pulse to all winning Sacred symbols
+                    allSacredWinIndices.forEach(idx => {
+                        slotElements[idx].classList.add('sacred-pulse');
+                    });
+
+                    // Show initial win message (before bonus)
+                    let winMsg = `You won ${originalWin} Sacred Bucks!`;
+                    if (triggersFreeSpins && !isFreeSpin) {
+                        winMsg += `\nBONUS: 5 FREE SPINS!`;
+                    }
+                    winMessage.textContent = winMsg;
+                    winMessage.classList.remove('hidden');
+
+                    // If Sacred Bucks bonus applies, show bonus effects after user sees initial win
+                    if (hasSacredBucksBonus) {
+                        // Wait 2 seconds to show initial win, then start bonus sequence
+                        setTimeout(() => {
+                            // Update win message to show doubled amount
+                            winMessage.textContent = `You won ${totalWin} Sacred Bucks! (Doubled!)`;
+                            
+                            // Remove pulse and add blink to only winning Sacred symbols
+                            allSacredWinIndices.forEach(idx => {
+                                slotElements[idx].classList.remove('sacred-pulse');
+                                slotElements[idx].classList.add('sacred-blink');
+                            });
+                            
+                            // After blinking for 2 seconds, show video
+                            setTimeout(() => {
+                                allSacredWinIndices.forEach(idx => {
+                                    slotElements[idx].classList.remove('sacred-blink');
+                                });
+                                
+                                // Show Sacred Bucks video with doubled win amount
+                                videoBonusText.innerHTML = `${totalWin} Sacred Bucks<br><span style="font-size: 0.7em;">All winnings doubled</span>`;
+                                videoBonusText.classList.remove('hidden');
+                                
+                                winVideo.currentTime = 0;
+                                winVideoOverlay.classList.remove('hidden');
+                                winVideo.play().catch(e => console.log('Video play error:', e));
+                                
+                                // Track when video started
+                                const videoStartTime = Date.now();
+                                const minDisplayTime = 15000; // 15 seconds
+                                
+                                // Hide video when it ends, but ensure it stays for at least 15 seconds
+                                winVideo.onended = () => {
+                                    const elapsedTime = Date.now() - videoStartTime;
+                                    const remainingTime = minDisplayTime - elapsedTime;
+                                    
+                                    if (remainingTime > 0) {
+                                        // Video ended but hasn't been up for 15 seconds yet, wait
+                                        setTimeout(() => {
+                                            winVideoOverlay.classList.add('hidden');
+                                            videoBonusText.classList.add('hidden');
+                                        }, remainingTime);
+                                    } else {
+                                        // Video has been up for at least 15 seconds, hide immediately
+                                        winVideoOverlay.classList.add('hidden');
+                                        videoBonusText.classList.add('hidden');
+                                    }
+                                };
+                                
+                                // Fallback: ensure video is hidden after at least 15 seconds even if onended doesn't fire
+                                setTimeout(() => {
+                                    if (!winVideoOverlay.classList.contains('hidden')) {
+                                        winVideoOverlay.classList.add('hidden');
+                                        videoBonusText.classList.add('hidden');
+                                    }
+                                }, minDisplayTime);
+                            }, 2000);
+                        }, 2000);
+                    }
+
+                    // Remove win highlight after 3 seconds (give more time if Sacred Bucks bonus)
+                    setTimeout(() => {
+                        slotElements.forEach(slot => {
+                            slot.classList.remove('win', 'sacred-pulse', 'sacred-blink');
+                        });
+                    }, hasSacredBucksBonus ? 3000 : 2000);
+                } else {
+                    if (isFreeSpin) {
+                        winMessage.textContent = `Free Spin ${5 - freeSpinsRemaining}/5 - No win this time.`;
+                    } else {
+                        winMessage.textContent = 'No win this time. Try again!';
+                    }
+                    winMessage.classList.remove('hidden');
+                    setTimeout(() => {
+                        winMessage.classList.add('hidden');
+                    }, 2000);
+                }
+
+                isSpinning = false;
+
+                // Handle free spins continuation
+                if (isFreeSpin && freeSpinsRemaining > 0) {
+                    // Auto-trigger next free spin after delay
+                    setTimeout(() => {
+                        spin(true);
+                    }, 2500);
+                } else {
+                    if (isFreeSpin && freeSpinsRemaining === 0) {
+                        // Free spins ended
+                        isFreeSpin = false;
+                        winMessage.textContent = 'Free Spins Complete!';
+                        winMessage.classList.remove('hidden');
+                        setTimeout(() => {
+                            winMessage.classList.add('hidden');
+                        }, 3000);
+                    }
+                    spinBtn.disabled = false;
+                    rebetBtn.disabled = false;
+                }
+            }, 1500);
+        }
+
+        // Rebet function - opens modal
+        function rebet() {
+            if (isSpinning) return;
+            if (isFreeSpin) {
+                alert('Cannot rebet during free spins!');
+                return;
+            }
+            
+            // Update modal with current values
+            if (lastBet === 0 || lastBet < 1) {
+                // First time placing a bet
+                modalBetInput.value = 10;
+                modalTitle.textContent = 'Place Your Bet';
+                modalMessage.textContent = 'Set your bet amount (up to 1000 Sacred Bucks):';
+                confirmRebetBtn.textContent = 'Confirm Bet';
+            } else {
+                // Rebetting
+                modalBetInput.value = lastBet;
+                modalTitle.textContent = 'Rebet';
+                modalMessage.textContent = 'Place the same bet again?';
+                confirmRebetBtn.textContent = 'Confirm Rebet';
+            }
+            document.getElementById('modalBalance').textContent = balance.toLocaleString();
+            
+            // Show modal
+            rebetModal.classList.remove('hidden');
+        }
+
+        // Confirm bet from modal
+        function confirmRebet() {
+            if (isSpinning) return;
+            
+            const bet = parseInt(modalBetInput.value);
+            if (isNaN(bet) || bet < 1 || bet > 1000) {
+                alert('Bet must be between 1 and 1000 Sacred Bucks!');
+                return;
+            }
+            
+            // Update last bet
+            lastBet = bet;
+            updateCurrentBet();
+            
+            // Close modal
+            rebetModal.classList.add('hidden');
+            
+            // Spin with the bet from modal
+            spin();
+        }
+
+        // Cancel rebet
+        function cancelRebet() {
+            rebetModal.classList.add('hidden');
+        }
+
+        // Update balance display
+        function updateBalance() {
+            balanceDisplay.textContent = balance.toLocaleString();
+            // Also update modal balance if modal is open
+            if (!rebetModal.classList.contains('hidden')) {
+                document.getElementById('modalBalance').textContent = balance.toLocaleString();
+            }
+        }
+
+        // Update current bet display
+        function updateCurrentBet() {
+            if (lastBet > 0) {
+                currentBetDisplay.textContent = lastBet.toLocaleString();
+            } else {
+                currentBetDisplay.textContent = '-';
+            }
+        }
+
+        // Modal bet arrow handlers
+        modalBetArrowUp.addEventListener('click', () => {
+            const currentBet = parseInt(modalBetInput.value) || 10;
+            if (currentBet < 1000) {
+                modalBetInput.value = Math.min(currentBet + 1, 1000);
+            }
+            modalBetInput.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+
+        modalBetArrowDown.addEventListener('click', () => {
+            const currentBet = parseInt(modalBetInput.value) || 10;
+            if (currentBet > 1) {
+                modalBetInput.value = Math.max(currentBet - 1, 1);
+            }
+            modalBetInput.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+
+
+        // Event listeners
+        spinBtn.addEventListener('click', spin);
+        rebetBtn.addEventListener('click', rebet);
+        confirmRebetBtn.addEventListener('click', confirmRebet);
+        cancelRebetBtn.addEventListener('click', cancelRebet);
+
+        // Close modal when clicking outside of it
+        rebetModal.addEventListener('click', (e) => {
+            if (e.target === rebetModal) {
+                cancelRebet();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !rebetModal.classList.contains('hidden')) {
+                cancelRebet();
+            }
+        });
+
+        // Allow Enter key to confirm bet in modal
+        modalBetInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !rebetModal.classList.contains('hidden')) {
+                confirmRebet();
+            }
+        });
+
+        // Initialize game
+        initSlots();
+        updateCurrentBet();
+    </script>
+</body>
+</html>
